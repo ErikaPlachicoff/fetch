@@ -14,8 +14,27 @@ function showData(dataArray) {
   // El for itera sobre los elementos del array
   for (const item of dataArray) {
     // En la siguiente línea se utilizan "backticks" para armar el String. Más info => https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Template_literals
-    container.innerHTML += `<p> ${item.name} ${item.lastname} </p>`; // Se concatena cada párrafo de la manera que queremos mostrarlo al innerHTML del contenedor
-  }
+    container.innerHTML += `
+    <div class="dropdown">
+      <button class="dropbtn">${item.name} ${item.lastname}</button>
+      <div class="dropdown-content">
+        <p>Edad: ${item.age} años</p>
+      </div>
+    </div>`;
+}
 }
 
-// Escribe el código necesario para realizar el fetch al archivo con los datos y mostrar los estudiantes con la función showData
+// Realiza la petición fetch al archivo JSON con los datos
+fetch(DATA_URL)
+.then((res) => res.json())  //respuesta en formato json 
+.then(({ course, students, teacherName }) => {   //obtengo los datos del json 
+  document.getElementById('course').innerHTML += `${course}`;
+  document.getElementById('teacher').innerHTML += `${teacherName}`;
+
+  showData(students);  
+})
+.catch((error) => {
+  console.error("Error:", error);
+});
+
+
